@@ -1,0 +1,82 @@
+server:
+  name: "github-api"
+  version: "1.0.0"
+  description: "MCP Server for GitHub API"
+  base_url: "https://api.github.com"
+  timeout: 30
+  authentication:
+    type: "bearer"
+    description: "GitHub Personal Access Token"
+
+tools:
+  - name: "get_user"
+    description: "Get information about a GitHub user"
+    endpoint: "/users/{username}"
+    method: "GET"
+    parameters:
+      - name: "username"
+        type: "string"
+        location: "path"
+        description: "GitHub username"
+        required: true
+
+  - name: "list_user_repos"
+    description: "List repositories for a user"
+    endpoint: "/users/{username}/repos"
+    method: "GET"
+    parameters:
+      - name: "username"
+        type: "string"
+        location: "path"
+        description: "GitHub username"
+        required: true
+      - name: "sort"
+        type: "string"
+        location: "query"
+        description: "Sort by: created, updated, pushed, full_name"
+        required: false
+        default: "created"
+      - name: "per_page"
+        type: "integer"
+        location: "query"
+        description: "Results per page (max 100)"
+        required: false
+        default: 30
+
+  - name: "get_repo"
+    description: "Get information about a repository"
+    endpoint: "/repos/{owner}/{repo}"
+    method: "GET"
+    parameters:
+      - name: "owner"
+        type: "string"
+        location: "path"
+        description: "Repository owner"
+        required: true
+      - name: "repo"
+        type: "string"
+        location: "path"
+        description: "Repository name"
+        required: true
+
+  - name: "search_repos"
+    description: "Search for repositories"
+    endpoint: "/search/repositories"
+    method: "GET"
+    parameters:
+      - name: "q"
+        type: "string"
+        location: "query"
+        description: "Search query"
+        required: true
+      - name: "sort"
+        type: "string"
+        location: "query"
+        description: "Sort by: stars, forks, updated"
+        required: false
+      - name: "order"
+        type: "string"
+        location: "query"
+        description: "Order: desc, asc"
+        required: false
+        default: "desc"

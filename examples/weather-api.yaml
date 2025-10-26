@@ -1,0 +1,68 @@
+server:
+  name: "weather-api"
+  version: "1.0.0"
+  description: "MCP Server for Weather API"
+  base_url: "https://api.weatherapi.com/v1"
+  timeout: 30
+  authentication:
+    type: "apikey"
+    location: "query"
+    name: "key"
+    description: "Weather API Key"
+
+tools:
+  - name: "get_current_weather"
+    description: "Get current weather for a location"
+    endpoint: "/current.json"
+    method: "GET"
+    parameters:
+      - name: "q"
+        type: "string"
+        location: "query"
+        description: "Location (city name, coordinates, IP, etc.)"
+        required: true
+      - name: "aqi"
+        type: "string"
+        location: "query"
+        description: "Include air quality data (yes/no)"
+        required: false
+        default: "no"
+
+  - name: "get_forecast"
+    description: "Get weather forecast for a location"
+    endpoint: "/forecast.json"
+    method: "GET"
+    parameters:
+      - name: "q"
+        type: "string"
+        location: "query"
+        description: "Location (city name, coordinates, IP, etc.)"
+        required: true
+      - name: "days"
+        type: "integer"
+        location: "query"
+        description: "Number of days (1-10)"
+        required: true
+      - name: "aqi"
+        type: "string"
+        location: "query"
+        description: "Include air quality data (yes/no)"
+        required: false
+        default: "no"
+      - name: "alerts"
+        type: "string"
+        location: "query"
+        description: "Include weather alerts (yes/no)"
+        required: false
+        default: "no"
+
+  - name: "search_location"
+    description: "Search for a location"
+    endpoint: "/search.json"
+    method: "GET"
+    parameters:
+      - name: "q"
+        type: "string"
+        location: "query"
+        description: "Search query"
+        required: true

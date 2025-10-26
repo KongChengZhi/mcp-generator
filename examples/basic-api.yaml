@@ -1,0 +1,56 @@
+server:
+  name: "jsonplaceholder-api"
+  version: "1.0.0"
+  description: "MCP Server for JSONPlaceholder API"
+  base_url: "https://jsonplaceholder.typicode.com"
+  timeout: 30
+
+tools:
+  - name: "get_post"
+    description: "Get a specific post by ID"
+    endpoint: "/posts/{post_id}"
+    method: "GET"
+    parameters:
+      - name: "post_id"
+        type: "integer"
+        location: "path"
+        description: "Post ID"
+        required: true
+
+  - name: "list_posts"
+    description: "List all posts"
+    endpoint: "/posts"
+    method: "GET"
+    parameters: []
+
+  - name: "create_post"
+    description: "Create a new post"
+    endpoint: "/posts"
+    method: "POST"
+    parameters:
+      - name: "title"
+        type: "string"
+        location: "body"
+        description: "Post title"
+        required: true
+      - name: "body"
+        type: "string"
+        location: "body"
+        description: "Post body"
+        required: true
+      - name: "userId"
+        type: "integer"
+        location: "body"
+        description: "User ID"
+        required: true
+
+  - name: "get_user"
+    description: "Get a specific user by ID"
+    endpoint: "/users/{user_id}"
+    method: "GET"
+    parameters:
+      - name: "user_id"
+        type: "integer"
+        location: "path"
+        description: "User ID"
+        required: true
