@@ -24,6 +24,42 @@ mcp-gen preview config.yaml
 mcp-gen generate config.yaml -o ./output
 ```
 
+## 本地直接使用与全局注册
+
+- **在项目根目录直接使用（无需安装）**
+
+```cmd
+./mcp-gen.bat --help
+./mcp-gen.bat init -o config.yaml
+./mcp-gen.bat generate config.yaml -o out
+```
+
+- **通过模块入口使用（无需 PATH）**
+
+```cmd
+python -m mcp_generator --help
+python -m mcp_generator init -o config.yaml
+python -m mcp_generator generate config.yaml -o out
+```
+
+- **全局注册（把项目根目录加入 PATH）**
+
+```cmd
+scripts\register-mcp-gen-global.bat
+REM 重开一个新的终端窗口后生效
+mcp-gen --help
+```
+
+- **经典安装方式（需保证用户级 Scripts 在 PATH 中）**
+
+```cmd
+pip install -e .
+REM 如提示 mcp-gen 不在 PATH：
+setx PATH "%PATH%;%APPDATA%\Python\Python312\Scripts"
+REM 重开终端
+mcp-gen --help
+```
+
 ## 完整工作流程
 
 ### 1. 准备工作

@@ -26,8 +26,8 @@ TIMEOUT = {{ config.server.timeout }}
 SERVER_NAME = "{{ config.server.name }}"
 SERVER_VERSION = "{{ config.server.version }}"
 
-{% if config.server.authentication %}
 # Authentication configuration
+{% if config.server.authentication %}
 AUTH_TYPE = "{{ config.server.authentication.type }}"
 {% if config.server.authentication.location %}
 AUTH_LOCATION = "{{ config.server.authentication.location.value }}"
@@ -63,7 +63,7 @@ class MCPHTTPClient:
         if self.auth_token:
             if AUTH_TYPE == "bearer":
                 headers["Authorization"] = f"Bearer {self.auth_token}"
-            {% if config.server.authentication.location == "header" and config.server.authentication.name %}
+            {% if config.server.authentication.location and config.server.authentication.location.value == "header" and config.server.authentication.name %}
             elif AUTH_TYPE == "apikey" and AUTH_LOCATION == "header":
                 headers["{{ config.server.authentication.name }}"] = self.auth_token
             {% endif %}
@@ -94,7 +94,7 @@ class MCPHTTPClient:
         url = self._build_url(endpoint, path_params)
         request_headers = self._build_headers(headers)
 
-        {% if config.server.authentication and config.server.authentication.location == "query" and config.server.authentication.name %}
+        {% if config.server.authentication and config.server.authentication.location and config.server.authentication.location.value == "query" and config.server.authentication.name %}
         # Add API key to query params if needed
         if self.auth_token and AUTH_TYPE == "apikey" and AUTH_LOCATION == "query":
             if query_params is None:
@@ -154,7 +154,7 @@ async def list_tools() -> list[Tool]:
                     },
                     {% endfor %}
                 },
-                "required": [{% for param in tool.parameters %}{% if param.required %}"{{ param.name }}"{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}],
+                "required": [{% set req = tool.parameters | selectattr('required') | map(attribute='name') | list %}{% for n in req %}"{{ n }}"{% if not loop.last %}, {% endif %}{% endfor %}],
             },
         ),
         {% endfor %}
@@ -178,7 +178,7 @@ async def call_tool(name: str, arguments: Any) -> list[TextContent]:
 
     try:
         {% for tool in config.tools %}
-        {% if loop.first %}if{% else %}elif{% endif %} name == "{{ tool.name }}":
+{% if loop.first %}        if{% else %}        elif{% endif %} name == "{{ tool.name }}":
             # Extract parameters
             path_params = {}
             query_params = {}

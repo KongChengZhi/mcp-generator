@@ -29,93 +29,49 @@ pip install -e .
 
 ## 🚀 快速开始
 
-### 1. 创建配置文件
+### 🧭 本地直接使用与全局注册
 
-```bash
-mcp-gen init -o my-api-config.yaml
+- **在项目根目录直接使用（无需安装）**
+
+```cmd
+./mcp-gen.bat --help
+./mcp-gen.bat init -o config.yaml
+./mcp-gen.bat generate config.yaml -o out
 ```
 
-### 2. 编辑配置文件
+- **通过模块入口使用（无需 PATH）**
 
-```yaml
-server:
-  name: "my-api"
-  version: "1.0.0"
-  description: "My API MCP Server"
-  base_url: "https://api.example.com"
-  timeout: 30
-
-tools:
-  - name: "get_user"
-    description: "Get user information"
-    endpoint: "/users/{user_id}"
-    method: "GET"
-    parameters:
-      - name: "user_id"
-        type: "string"
-        location: "path"
-        description: "User ID"
-        required: true
+```cmd
+python -m mcp_generator --help
+python -m mcp_generator init -o config.yaml
+python -m mcp_generator generate config.yaml -o out
 ```
 
-### 3. 生成服务器代码
+- **全局注册（把项目根目录加入 PATH）**
 
-```bash
-mcp-gen generate my-api-config.yaml -o ./output
+```cmd
+scripts\register-mcp-gen-global.bat
+REM 重开一个新的终端窗口后生效
+mcp-gen --help
 ```
 
-### 4. 运行服务器
+- **经典安装方式（需保证用户级 Scripts 在 PATH 中）**
+
+```cmd
+pip install -e .
+REM 如提示 mcp-gen 不在 PATH：
+setx PATH "%PATH%;%APPDATA%\Python\Python312\Scripts"
+REM 重开终端
+mcp-gen --help
+```
+
+### 运行服务器代码
 
 ```bash
 cd output
 pip install -r requirements.txt
 python server.py
 ```
-
-## 📖 使用说明
-
-### 命令行工具
-
-MCP Generator 提供以下命令：
-
-#### 生成代码
-
-```bash
-mcp-gen generate <config-file> [-o <output-dir>]
-```
-
-从配置文件生成MCP服务器代码。
-
-选项：
-- `-o, --output` - 输出目录（默认：`./generated`）
-- `--validate-only` - 仅验证配置，不生成代码
-
-#### 验证配置
-
-```bash
-mcp-gen validate <config-file>
-```
-
-验证配置文件的正确性。
-
-#### 预览代码
-
-```bash
-mcp-gen preview <config-file> [--template <template-name>]
-```
-
-预览生成的代码，不写入磁盘。
-
-选项：
-- `--template` - 要预览的模板（`server`, `readme`, `requirements`）
-
-#### 初始化配置
-
-```bash
-mcp-gen init [-o <output-file>]
-```
-
-创建示例配置文件。
 
 ### 配置文件格式
 
